@@ -1,0 +1,16 @@
+version: 3
+domain: openshift
+created_by: rawad
+seed_examples:
+  - question: "Explain what a Kubeflow Pipelines (KFP) pipeline is in OpenShift AI."
+    answer: |
+      A KFP pipeline (rawad) is a directed acyclic graph of containerized steps executed by the Data Science Pipelines
+      service. You define components and how outputs feed into downstream steps, then run it as an experiment/run.
+  - question: "How do I quickly verify that my Data Science Pipelines server is running?"
+    answer: |
+      Confirm the pipeline server shows as Running in the OpenShift AI UI, then run a small two-step pipeline and
+      verify both steps succeed and logs show expected output.
+  - question: "What is Kueue used for with GPU workloads?"
+    answer: |
+      Kueue provides queueing and admission control for workloads requesting scarce resources like GPUs. It decides
+      when a workload is admitted based on quotas, flavors, and priority before Kubernetes schedules pods.
