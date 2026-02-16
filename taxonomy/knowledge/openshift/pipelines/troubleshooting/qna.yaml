@@ -1,16 +1,27 @@
 version: 3
-domain: openshift
+task_description: |
+  Explain OpenShift AI Data Science Pipelines concepts and provide practical troubleshooting guidance.
+  Focus on what a user should check, what they should expect to see, and which commands/logs help confirm issues.
 created_by: rawad
 seed_examples:
   - question: "Explain what a Kubeflow Pipelines (KFP) pipeline is in OpenShift AI."
     answer: |
-      A KFP pipeline (rawad) is a directed acyclic graph of containerized steps executed by the Data Science Pipelines
-      service. You define components and how outputs feed into downstream steps, then run it as an experiment/run.
+      A KFP pipeline is a directed acyclic graph (DAG) of containerized steps executed by the Data Science Pipelines
+      service. You define components and dependencies so outputs from earlier steps feed later steps, then run the
+      pipeline as a tracked run/experiment.
   - question: "How do I quickly verify that my Data Science Pipelines server is running?"
     answer: |
-      Confirm the pipeline server shows as Running in the OpenShift AI UI, then run a small two-step pipeline and
-      verify both steps succeed and logs show expected output.
+      In the OpenShift AI UI, confirm the pipeline server shows as Running. Then run a small two-step pipeline and
+      verify both steps succeed. If a run fails, inspect the step logs and Kubernetes events in the project namespace.
   - question: "What is Kueue used for with GPU workloads?"
     answer: |
-      Kueue provides queueing and admission control for workloads requesting scarce resources like GPUs. It decides
-      when a workload is admitted based on quotas, flavors, and priority before Kubernetes schedules pods.
+      Kueue provides queueing and admission control for scarce resources like GPUs. A workload is admitted only when
+      the ClusterQueue has quota and the namespace matches selectors; then Kubernetes schedules pods normally.
+  - question: "If a pipeline step is stuck Pending, what are the first checks?"
+    answer: |
+      Check pod events for ImagePullBackOff, FailedMount, SCC/permission issues, node selectors/taints, and resource
+      requests (CPU/memory/GPU). If using Kueue, also check Workload admission status and LocalQueue/ClusterQueue.
+  - question: "Where do I look to debug a failed pipeline step?"
+    answer: |
+      Start with the step logs in the pipeline UI. Then check the underlying pod logs, `oc describe pod` for events,
+      and any referenced Secrets/ConfigMaps. If artifacts are involved, validate object storage credentials and TLS.
